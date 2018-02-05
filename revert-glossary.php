@@ -19,7 +19,7 @@ if ($xml) {
         $e->CONCEPT[0] = $val;
         $counter++;
     }
-    $xml->asXML();
+    $xml->asXML($resultFile);
     echo sprintf('Script ends. See `%s` file. %d items processed %s.', $resultFile, $counter, PHP_EOL);
 } else {
     echo 'invalid XML file';
