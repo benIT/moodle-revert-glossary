@@ -16,7 +16,7 @@ if ($xml) {
         $val = str_replace(PHP_EOL, '', trim(strip_tags($e->DEFINITION[0])));
         echo sprintf('processing item: **%s** => **%s** %s', $key, $val, PHP_EOL);
         $e->DEFINITION[0] = $key;
-        $e->CONCEPT[0] = $val;
+        $e->CONCEPT[0] = substr($val, 0, 255);
         $counter++;
     }
     $xml->asXML($resultFile);
