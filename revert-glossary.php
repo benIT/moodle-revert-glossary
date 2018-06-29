@@ -12,11 +12,15 @@ if ($xml) {
     echo sprintf('processing file \'%s\' %s', $fileNameToProcess, PHP_EOL . PHP_EOL);
     $counter = 0;
     foreach ($xml->xpath("/GLOSSARY/INFO/ENTRIES/ENTRY") as $e) {
-        $key = $e->CONCEPT[0];
-        $val = str_replace(PHP_EOL, '', trim(strip_tags($e->DEFINITION[0])));
-        echo sprintf('processing item: **%s** => **%s** %s', $key, $val, PHP_EOL);
-        $e->DEFINITION[0] = $key;
-        $e->CONCEPT[0] = substr($val, 0, 255);
+        $concept = $e->CONCEPT[0];
+        $definition = str_replace(PHP_EOL, '', trim(strip_tags($e->DEFINITION[0])));
+        $definition = preg_replace("/\(.*\)/", "", $definition);//replace parenthesis in value before permuting it as key
+        echo sprintf('processing item: **%s** => **%s** %s', $concept, $definition, PHP_EOL);
+        $e->DEFINITION[0] = $concept;
+        $e->CONCEPT[0] = substr($definition, 0, 255);
+        unset($e->ENTRYFILES);
+        unset($e->ATTACHMENTFILES);
+        unset($e->ALIASES);
         $counter++;
     }
     $xml->asXML($resultFile);
